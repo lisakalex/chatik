@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 
+
 def clean_html_file(file_path: str, h1_text: str = None) -> None:
     """
     Cleans an HTML file by removing unwanted tags and attributes, in-place.
@@ -13,6 +14,16 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     soup = BeautifulSoup(html_content, "html.parser")
 
     # --- Removal Rules ---
+
+    # --- Extra Feature: Insert H1 into third div of first article ---
+    if h1_text:
+        first_article = soup.find("article")
+        if first_article:
+            divs = first_article.find_all("div")
+            if len(divs) >= 3:
+                h1_tag = soup.new_tag("h1")
+                h1_tag.string = h1_text
+                divs[2].insert(0, h1_tag)  # insert at beginning of 3rd div
 
     # 1. Remove empty <div> tags, but keep if they contain <img>
     for div in soup.find_all("div"):
@@ -60,15 +71,9 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     for link in soup.find_all("link", attrs={"crossorigin": True}):
         del link["crossorigin"]
 
-    # --- Extra Feature: Insert H1 into third div of first article ---
-    if h1_text:
-        first_article = soup.find("article")
-        if first_article:
-            divs = first_article.find_all("div")
-            if len(divs) >= 3:
-                h1_tag = soup.new_tag("h1")
-                h1_tag.string = h1_text
-                divs[2].insert(0, h1_tag)  # insert at beginning of 3rd div
+    draggable = soup.find('div', class_='draggable')
+    if draggable:
+        draggable.decompose()
 
     # --- Write back cleaned HTML (overwrite original file) ---
     with open(file_path, "w", encoding="utf-8") as file:
@@ -79,4 +84,4 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    clean_html_file("index.html", h1_text="My Custom Title")
+    clean_html_file("index.html", h1_text="3 years of DevOps experience")
