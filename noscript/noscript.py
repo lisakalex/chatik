@@ -11,6 +11,10 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     with open(file_path, "r", encoding="utf-8") as file:
         html_content = file.read()
 
+    # save original
+    with open('index-1.html', "w", encoding="utf-8") as file:
+        file.write(html_content)
+
     soup = BeautifulSoup(html_content, "html.parser")
 
     # --- Removal Rules ---
@@ -84,4 +88,4 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    clean_html_file("index.html", h1_text="3 years of DevOps experience")
+    clean_html_file("index.html", h1_text="Latest trends in artificial intelligence")
