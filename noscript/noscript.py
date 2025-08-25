@@ -75,9 +75,15 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     for link in soup.find_all("link", attrs={"crossorigin": True}):
         del link["crossorigin"]
 
+    # remove mobile header
     draggable = soup.find('div', class_='draggable')
     if draggable:
         draggable.decompose()
+
+    # remove mobile header
+    # you_said = soup.find('article')
+    # if 'You said:' in you_said.get_text(strip=True):
+    #     you_said.decompose()
 
     # --- Write back cleaned HTML (overwrite original file) ---
     with open(file_path, "w", encoding="utf-8") as file:
@@ -88,4 +94,4 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    clean_html_file("index.html", h1_text="Cocoa Commodity Price Trend")
+    clean_html_file("index.html", h1_text="Production cost relative to retail price for a Chanel bag")
