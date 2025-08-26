@@ -80,7 +80,7 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     if draggable:
         draggable.decompose()
 
-    # remove mobile header
+    # remove empty space
     # you_said = soup.find('article')
     # if 'You said:' in you_said.get_text(strip=True):
     #     you_said.decompose()
@@ -94,4 +94,6 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    clean_html_file("index.html", h1_text="Production cost relative to retail price for a Chanel bag")
+    title = 'step-by-step transition plan'
+    title = title.capitalize()
+    clean_html_file("index.html", h1_text=title)
