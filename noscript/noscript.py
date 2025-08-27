@@ -94,6 +94,6 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    title = 'step-by-step transition plan'
+    title = 'C-Class Used Market Tracker'
     title = title.capitalize()
     clean_html_file("index.html", h1_text=title)
