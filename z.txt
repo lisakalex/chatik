@@ -159,4 +159,11 @@ esume on LinkedIn
 java.nio.file.NoSuchFileException: /home/al/Downloads/index_files/root-f283ek1z.css
 
 ~~~
+go to /home/al/IdeaProjects/chatik
+source ~/.venv/bin/activate
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+~~~
+
 
