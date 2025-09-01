@@ -168,3 +168,9 @@ pip freeze > requirements.txt
 ~~~
 website-traffic-and-deployment
 
+~~~
+import sys
+print(sys.executable)
+
+~~~
+
