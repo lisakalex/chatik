@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+import time
+import subprocess
 
 
 def clean_html_file(file_path: str, h1_text: str = None) -> None:
@@ -6,6 +8,7 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     Cleans an HTML file by removing unwanted tags and attributes, in-place.
     Optionally inserts an <h1> with given text into the third <div> of the first <article>.
     """
+    time.sleep(0.5)  # Polling interval
 
     # Read the HTML content
     with open(file_path, "r", encoding="utf-8") as file:
