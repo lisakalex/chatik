@@ -33,11 +33,11 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
                 divs[2].insert(0, h1_tag)  # insert at beginning of 3rd div
 
     # 1. Remove empty <div> tags, but keep if they contain <img>
-    for div in soup.find_all("div"):
-        has_text = bool(div.get_text(strip=True))
-        has_img = bool(div.find("img"))
-        if not has_text and not has_img:
-            div.decompose()
+    # for div in soup.find_all("div"):
+    #     has_text = bool(div.get_text(strip=True))
+    #     has_img = bool(div.find("img"))
+    #     if not has_text and not has_img:
+    #         div.decompose()
 
     # 2. Remove all <script> tags
     for script_tag in soup.find_all("script"):
@@ -59,7 +59,7 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     classes_to_remove = [
         "absolute start-0 end-0 bottom-full z-20",
         "flex min-h-[46px] justify-start",
-        "user-message-bubble-color",
+        # "user-message-bubble-color",
     ]
 
     for element_id in ids_to_remove:
@@ -97,6 +97,6 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    title = 'MOT RY05 ZHO'
+    title = 'Car ownership strategies'
     title = title.capitalize()
     clean_html_file("index.html", h1_text=title)
