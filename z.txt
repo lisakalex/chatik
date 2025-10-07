@@ -1,3 +1,7 @@
 # start web server
 cd ~/IdeaProjects/chatik && python3 -m http.server 8012
 https://lisakalex.github.io/chatik/
+
+sudo nano /etc/systemd/system/electrum.service
+
+~~~
