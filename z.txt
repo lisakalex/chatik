@@ -1,5 +1,13 @@
-# start web server
+1. save a chatgpt page as webpage complete and name it index.html
+2. copy index.html and the index_files dir to noscript
+3. go to noscript.py give a title (line 99) and run
+4. create a dir if not there and subdir and copy index_files and index.html
+5. go to index.html in root add the links
+
+# start web server to run locally
 cd ~/IdeaProjects/chatik && python3 -m http.server 8003
+
+commit and it will be at
 https://lisakalex.github.io/chatik/
 
 ~~~
