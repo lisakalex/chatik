@@ -1,7 +1,32 @@
 # start web server
-cd ~/IdeaProjects/chatik && python3 -m http.server 8012
+cd ~/IdeaProjects/chatik && python3 -m http.server 8003
 https://lisakalex.github.io/chatik/
 
-sudo nano /etc/systemd/system/electrum.service
+~~~
+Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+Then restart your terminal
+
+cd ~/IdeaProjects/chatik
+uv venv --python 3.13 .venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+uv pip install package
+uv pip install --upgrade package
+uv pip install package==2.6.0
+uv pip uninstall package
+uv pip freeze > requirements.txt
+deactivate
+
+standard venv + pip (classic & compatible)
+python3 -m venv ~/.venv
+source ~/.venv/bin/activate
+python -m pip install package
+python -m pip install --upgrade package
+python -m pip install package==2.6.0
+python -m pip uninstall package
+pip freeze > requirements.txt
+python -m pip install -r /var/www/requirements.txt
+deactivate
 
 ~~~

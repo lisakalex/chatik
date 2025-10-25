@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import time
-import subprocess
 
 
 def clean_html_file(file_path: str, h1_text: str = None) -> None:
@@ -97,6 +96,6 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    title = 'Car ownership strategies'
+    title = 'Django Crontab'
     title = title.capitalize()
     clean_html_file("index.html", h1_text=title)
