@@ -42,6 +42,10 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     for script_tag in soup.find_all("script"):
         script_tag.decompose()
 
+    # 2. Remove all <hr> tags
+    for script_tag in soup.find_all("hr"):
+        script_tag.decompose()
+
     # 3. Remove <link> tags pointing to .js files
     for link in soup.find_all("link", href=True):
         if link["href"].split("?")[0].endswith(".js"):
@@ -58,7 +62,7 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     classes_to_remove = [
         "absolute start-0 end-0 bottom-full z-20",
         "flex min-h-[46px] justify-start",
-        # "user-message-bubble-color",
+        "user-message-bubble-color",
     ]
 
     for element_id in ids_to_remove:
@@ -96,6 +100,6 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
 
 # Example usage
 if __name__ == "__main__":
-    title = 'Django Crontab'
+    title = 'Job stagnation and pay issues'
     title = title.capitalize()
     clean_html_file("index.html", h1_text=title)
