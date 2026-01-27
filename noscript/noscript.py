@@ -62,7 +62,7 @@ def clean_html_file(file_path: str, h1_text: str = None) -> None:
     classes_to_remove = [
         "absolute start-0 end-0 bottom-full z-20",
         "flex min-h-[46px] justify-start",
-        "user-message-bubble-color",
+        # "user-message-bubble-color",
     ]
 
     for element_id in ids_to_remove:
