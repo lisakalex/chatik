@@ -1,0 +1,412 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Keys, Not Paths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EFF1F4; --surface:#FFFFFF; --surface-2:#E7EBEF;
+  --ink:#141A21; --ink-2:#3D4952; --muted:#67757F;
+  --rule:#D3D9DF; --rule-strong:#B9C2CA;
+  --accent:#0E7C86; --accent-soft:#DCEDEF; --accent-ink:#08585F;
+  --warn:#A9660A; --warn-soft:#F6E9D5; --warn-rule:#DFC08A;
+  --stop:#A32E28; --stop-soft:#F7E2E0; --stop-rule:#E0AAA6;
+  --good:#2C6E49; --good-soft:#DCEBE2; --good-rule:#A8CBB6;
+  --code-bg:#1B222A; --code-ink:#DCE3E9; --code-muted:#7C8A96;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12171C; --surface:#1A2027; --surface-2:#222A32;
+    --ink:#E4E9ED; --ink-2:#BCC7D0; --muted:#8D9AA6;
+    --rule:#2A333C; --rule-strong:#3A4650;
+    --accent:#3FBFCB; --accent-soft:#16333A; --accent-ink:#7FD8E1;
+    --warn:#E2A03F; --warn-soft:#33280F; --warn-rule:#5C4A21;
+    --stop:#E8756C; --stop-soft:#3A1815; --stop-rule:#6B2E28;
+    --good:#5FBF8B; --good-soft:#13301F; --good-rule:#2E5B3F;
+    --code-bg:#0C1116; --code-ink:#D6DEE5; --code-muted:#6E7C88;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12171C; --surface:#1A2027; --surface-2:#222A32;
+  --ink:#E4E9ED; --ink-2:#BCC7D0; --muted:#8D9AA6;
+  --rule:#2A333C; --rule-strong:#3A4650;
+  --accent:#3FBFCB; --accent-soft:#16333A; --accent-ink:#7FD8E1;
+  --warn:#E2A03F; --warn-soft:#33280F; --warn-rule:#5C4A21;
+  --stop:#E8756C; --stop-soft:#3A1815; --stop-rule:#6B2E28;
+  --good:#5FBF8B; --good-soft:#13301F; --good-rule:#2E5B3F;
+  --code-bg:#0C1116; --code-ink:#D6DEE5; --code-muted:#6E7C88;
+}
+
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:53rem;margin:0 auto;padding:clamp(1.75rem,4vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem;
+  display:flex;flex-direction:column;gap:3.25rem;}
+
+h1,h2,h3{font-family:Archivo,"IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;margin:0;letter-spacing:-0.021em;}
+h1{font-weight:800;font-size:clamp(2.1rem,5.4vw,3.05rem);line-height:1.05;}
+h2{font-weight:700;font-size:clamp(1.35rem,3vw,1.7rem);line-height:1.16;}
+h3{font-weight:600;font-size:1.02rem;line-height:1.3;}
+p{margin:0;max-width:65ch;}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:0;}
+.lede{font-size:1.1rem;color:var(--ink-2);max-width:60ch;}
+.note{font-size:.9rem;color:var(--muted);max-width:62ch;}
+strong{font-weight:600;color:var(--ink);}
+
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;}
+p code,li code,td code,.answer code,figcaption code{font-size:.87em;background:var(--surface-2);border:1px solid var(--rule);border-radius:4px;padding:.06em .34em;white-space:nowrap;}
+
+.masthead{display:flex;flex-direction:column;gap:1.15rem;padding-bottom:2rem;border-bottom:3px solid var(--ink);}
+section{display:flex;flex-direction:column;gap:1.15rem;}
+.sec-head{display:flex;flex-direction:column;gap:.4rem;}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:7px;padding:1.05rem 1.15rem;
+  overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:.815rem;line-height:1.72;
+  white-space:pre;border:1px solid var(--rule);}
+.code .k{color:#7FD8E1;} .code .c{color:var(--code-muted);} .code .w{color:#E2A03F;}
+.code .g{color:#7FD8A0;} .code .r{color:#F09A92;}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.7rem;background:var(--surface);
+  border:1px solid var(--rule);border-radius:8px;padding:1.3rem 1.2rem 1.1rem;}
+figure .svg-scroll{overflow-x:auto;}
+figure svg{display:block;max-width:100%;height:auto;min-width:26rem;margin:0 auto;}
+figcaption{font-size:.88rem;color:var(--muted);max-width:64ch;}
+
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:7px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:31rem;}
+th,td{text-align:left;padding:.62rem .85rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+thead th{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2);white-space:nowrap;}
+tbody tr:last-child td{border-bottom:none;}
+td.key{font-family:"IBM Plex Mono",monospace;font-weight:500;white-space:nowrap;}
+
+.chip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:600;
+  letter-spacing:.05em;padding:.16rem .45rem;border-radius:3px;white-space:nowrap;border:1px solid;}
+.chip.ok{color:var(--good);background:var(--good-soft);border-color:var(--good-rule);}
+.chip.imp{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-rule);}
+.chip.exp{color:var(--stop);background:var(--stop-soft);border-color:var(--stop-rule);}
+
+.call{border:1px solid var(--rule);border-left:3px solid var(--accent);background:var(--surface);
+  border-radius:0 7px 7px 0;padding:.95rem 1.1rem;display:flex;flex-direction:column;gap:.45rem;}
+.call.warn{border-left-color:var(--warn);background:var(--warn-soft);border-color:var(--warn-rule);}
+.call.stop{border-left-color:var(--stop);background:var(--stop-soft);border-color:var(--stop-rule);}
+.call h3{font-size:.76rem;font-family:"IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);}
+.call.warn h3{color:var(--warn);} .call.stop h3{color:var(--stop);}
+.call p{font-size:.94rem;color:var(--ink-2);}
+
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:1rem;}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:7px;padding:1.05rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;}
+.card p{font-size:.92rem;color:var(--ink-2);}
+.card .tag{font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+details{background:var(--surface);border:1px solid var(--rule);border-radius:7px;overflow:hidden;}
+details+details{margin-top:.6rem;}
+summary{cursor:pointer;padding:.85rem 1.05rem;font-weight:500;font-size:.96rem;list-style:none;display:flex;gap:.7rem;align-items:baseline;}
+summary::-webkit-details-marker{display:none;}
+summary::before{content:"Q";font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent);flex:none;}
+details[open] summary{border-bottom:1px solid var(--rule);background:var(--surface-2);}
+.answer{padding:.9rem 1.05rem;font-size:.93rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.55rem;}
+
+a{color:var(--accent-ink);}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px;}
+footer{border-top:1px solid var(--rule);padding-top:1.4rem;color:var(--muted);font-size:.85rem;display:flex;flex-direction:column;gap:.4rem;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+
+<style>
+.facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem .55rem;
+  margin-top:.3rem;
+}
+.fact{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.73rem;
+  letter-spacing:.02em;
+  color:var(--muted);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:.24rem .5rem;
+  background:var(--surface);
+}
+
+/* numbered walkthrough */
+.steps{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:var(--surface);}
+.step{display:grid;grid-template-columns:auto 1fr;gap:.95rem;padding:1rem 1.1rem;border-bottom:1px solid var(--rule);}
+.step:last-child{border-bottom:none;}
+.step .n{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.8rem;color:var(--surface);
+  background:var(--accent);width:1.6rem;height:1.6rem;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;flex:none;margin-top:.15rem;}
+.step h3{margin-bottom:.2rem;}
+.step p{font-size:.93rem;color:var(--ink-2);}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Module 03 &middot; Lesson 3.1 &middot; AWS + DevOps course</p>
+    <h1>Keys, Not Paths</h1>
+    <p class="lede">S3 looks like a filesystem in every screenshot and behaves like one in almost
+    no way that matters. This replaces the folder picture with the real one, using the two buckets
+    already defined in your repository.</p>
+    <div class="facts">
+      <span class="fact">account 739489595894</span>
+      <span class="fact">us-east-1</span>
+      <span class="fact">verified 2026-09-10</span>
+      <span class="fact">repo aws-sre</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The core idea</p>
+      <h2>A bucket is a flat map from one string to a pile of bytes</h2>
+    </div>
+    <p>Everything else &mdash; folders, trees, paths &mdash; is presentation. This is the return
+    value of <code>upload_avatar</code> in <code>app/services/s3.py</code>, taken apart the same way
+    Module 1 took apart an ARN:</p>
+
+<div class="code">https://<span class="k">prima-tech-challenge-lisakalex</span>.s3.<span class="w">us-east-1</span>.amazonaws.com/<span class="g">avatars/9f2c….png</span>
+        <span class="c">└─────────────┬──────────────┘    └────┬────┘        └───────┬───────┘</span>
+        <span class="c">        bucket name              region              the key, entire</span>
+        <span class="c">      globally unique        where bytes live     no folder in sight</span></div>
+
+    <p>Three separate facts, and beginners routinely merge them. The bucket name is unique across
+    <em>every AWS account on Earth</em>. The region says which data centres hold the bytes. The key
+    is one flat string &mdash; and the slash in it is just a character.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Vocabulary</p>
+      <h2>Three words, used precisely</h2>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>Term</th><th>What it actually is</th></tr></thead>
+      <tbody>
+        <tr><td class="key">bucket</td><td>A named container in one region. The name is <strong>global</strong> &mdash; <code>prima-tech-challenge-lisakalex</code> is yours and nobody else can ever have it. That is why your Terraform appends a workspace suffix: two environments cannot share one name.</td></tr>
+        <tr><td class="key">key</td><td>The <strong>whole</strong> string identifying an object in the bucket. Not a filename, not a path &mdash; <code>avatars/9f2c….png</code> is the key, slash included. Maximum 1,024 UTF-8 bytes.</td></tr>
+        <tr><td class="key">object</td><td>The bytes plus their metadata: content type, size, ETag, storage class, encryption. Up to 5 TB. Written whole, replaced whole &mdash; there is no &ldquo;open the file and seek to byte 400&rdquo;.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The prefix illusion</p>
+      <h2>There are no directories, and your code proves it</h2>
+    </div>
+    <p>Your uploader never creates a folder, never checks whether one exists, and never fails
+    because one is missing:</p>
+
+<div class="code"><span class="c"># app/services/s3.py</span>
+key = f"<span class="g">avatars/</span>{uuid.uuid4()}.{extension}"
+self._client.upload_fileobj(file, self._bucket, key, …)</div>
+
+    <p>It builds one string and hands it over. If <code>avatars/</code> had to exist first, that
+    code would be broken &mdash; and it isn't. The console draws a folder icon because it groups
+    keys sharing a prefix up to the next <code>/</code>. That grouping is a display convention,
+    computed on read.</p>
+
+<div class="code"><span class="c">rename a "folder"   </span>→  copy every object to new keys, delete the originals
+<span class="c">move an object      </span>→  same thing: copy, then delete. There is no move.
+<span class="c">an empty folder     </span>→  cannot exist. No keys, nothing to group, nothing shown.
+<span class="c">list "inside" a dir </span>→  ListObjectsV2 with <span class="g">Prefix=avatars/</span> — a string filter</div>
+
+    <div class="call">
+      <h3>Where the prefix is genuinely load-bearing</h3>
+      <p>Policy and configuration, where it filters by string match. Your lifecycle rule targets
+      <code>prefix = "avatars/"</code>; your IAM policy grants object actions on
+      <code>arn:…:prima-tech-challenge-lisakalex/*</code>. Both are string matching, not directory
+      traversal.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Scope &middot; callback to Module 1, Q3</p>
+      <h2>Global name, regional bytes</h2>
+    </div>
+    <p>You met this exception once already and got it half right: you applied the correct general
+    rule &mdash; resources are regional &mdash; and S3 broke it. The precise version:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Aspect</th><th>Scope</th><th>Consequence</th></tr></thead>
+      <tbody>
+        <tr><td class="key">the namespace</td><td><span class="chip ok">global</span></td><td>Names claimed across all of AWS, first come first served. <code>ListBuckets</code> answers from anywhere and returns every bucket you own in every region.</td></tr>
+        <tr><td class="key">the bytes</td><td><span class="chip imp">regional</span></td><td>Objects live in the bucket's region and never silently leave it. That is what makes S3 usable under data-residency rules &mdash; and why the region appears in the URL your code returns.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Say it in an interview as: <em>&ldquo;the namespace is global, the data is regional.&rdquo;</em>
+    Short, exactly right, and it shows you know S3 is the odd one out.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Design &middot; your repo already contains the argument</p>
+      <h2>Two buckets, opposite choices, both correct</h2>
+    </div>
+    <div class="split">
+      <div class="card">
+        <span class="tag">destroyed in the August teardown</span>
+        <h3>aws_s3_bucket.avatars</h3>
+        <p><strong>No versioning.</strong> KMS CMK &middot; public access block, all four &middot;
+        lifecycle rules &middot; <code>force_destroy = true</code></p>
+        <p>Every upload mints a fresh UUID key, so nothing is ever overwritten &mdash; versioning
+        would guard against a danger the design already removed. And it is disposable teaching
+        infrastructure, so it must tear down cleanly.</p>
+      </div>
+      <div class="card">
+        <span class="tag">live right now</span>
+        <h3>aws_s3_bucket.state</h3>
+        <p><strong>Versioning enabled.</strong> KMS CMK &middot; public access block, all four
+        &middot; no lifecycle rules &middot; no <code>force_destroy</code></p>
+        <p>Holds exactly one hot object &mdash; your Terraform state &mdash; rewritten on every
+        apply. A corrupt write with no previous version means hand-rebuilding the map of everything
+        you own. Terraform refusing to delete this bucket easily is the point.</p>
+      </div>
+    </div>
+    <div class="call">
+      <h3>The rule underneath</h3>
+      <p><strong>Versioning protects against overwrite and deletion, not against loss of the
+      disk.</strong> S3 already handles the disk. Ask &ldquo;what happens if the current version is
+      wrong?&rdquo; &mdash; if the answer is expensive, turn versioning on and pay for the extra
+      copies.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Proved on your own account</p>
+      <h2>The undo button you have never looked at</h2>
+    </div>
+    <p><code>list-object-versions</code> on your live state bucket returns your August teardown,
+    recorded in three frames &mdash; read bottom to top:</p>
+
+<div class="code">latest     size   modified          version id
+  <span class="g">*</span>         181   2026-08-18 07:14  aEKsFiMJODJ8MS0v…   <span class="c">← current: "resources": []</span>
+           1733   2026-08-18 07:13  zG9_rEJhHNQYh0y_…   <span class="c">← mid-destroy</span>
+          <span class="w">26545</span>   2026-08-18 05:56  KQIXWzVkIdmMmxtd…   <span class="c">← the full stack, 16 resources</span>
+
+delete markers: 0</div>
+
+    <p>Fetching that 26 KB version with <code>get-object --version-id</code> returns the exact
+    description of everything you owned on 18 August &mdash; every resource id and ARN, enough to
+    <code>terraform import</code> your way home. It cost one API call and nothing in dollars.</p>
+
+    <div class="call">
+      <h3>Three things follow</h3>
+      <p><strong>Old versions were never deleted.</strong> <code>IsLatest</code> is just a pointer at
+      the newest one. Overwriting an object in a versioned bucket adds a version and moves the
+      pointer. <code>delete markers: 0</code> confirms nothing here was deleted, only superseded.</p>
+      <p><strong>You are billed for 28,459 bytes, not 181.</strong> Every version is a stored object.
+      Trivial here; on a bucket where a large file is rewritten nightly it is how people accidentally
+      store the same data three hundred times.</p>
+      <p><strong><code>serial</code> went 1 &rarr; 3.</strong> Terraform's own write counter, with
+      <code>lineage</code> unchanged &mdash; that pair is how Terraform detects that two people have
+      diverged, and why the DynamoDB lock table sits beside this bucket.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Durability</p>
+      <h2>Eleven nines, and what it does not mean</h2>
+    </div>
+    <p>S3 Standard is designed for 99.999999999% annual durability. Store ten million objects and
+    you would expect to lose one roughly every ten thousand years. AWS achieves it by replicating
+    across at least three physically separate Availability Zones before acknowledging your write.</p>
+    <p>What it does <strong>not</strong> cover, and this is the interview trap: durability is about
+    AWS losing your bytes. It says nothing about <em>you</em> losing them. A bad deploy that deletes
+    the wrong keys, a wrong prefix in a lifecycle rule, credentials in a public repo &mdash; all
+    fully durable operations. S3 will preserve the consequences with eleven nines of fidelity.</p>
+    <p>Availability is a separate, lower number: 99.99% for Standard. <strong>Durable</strong> means
+    the bytes still exist; <strong>available</strong> means you can reach them today.</p>
+
+    <div class="call warn">
+      <h3>Where the money leaks</h3>
+      <p>A multipart upload that never finishes leaves its uploaded parts in the bucket, billed as
+      storage, invisible in a normal object listing, with nothing to ever delete them. Your
+      <code>abort-incomplete-multipart-uploads</code> rule at 7 days exists for exactly this. It is
+      the most common silent S3 bill in the wild, and you fixed it before it happened.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Hands-on &middot; ~10 minutes &middot; costs nothing</p>
+      <h2>Run it against your own bucket</h2>
+      <p class="note">Warm the session first &mdash; <code>aws sts get-caller-identity --profile admin</code>
+      in your own terminal &mdash; then read the output rather than skimming it.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div>
+        <h3>Confirm the global listing</h3>
+        <p><code>aws s3 ls --profile admin</code> &mdash; no region flag, yet it answers. That is the global half.</p>
+      </div></div>
+      <div class="step"><span class="n">2</span><div>
+        <h3>Find the region of the bytes</h3>
+        <p><code>aws s3api get-bucket-location --bucket prima-tech-challenge-lisakalex-tfstate --profile admin</code>
+        &mdash; returns <code>null</code>, which <em>means</em> <code>us-east-1</code>. That region predates the
+        concept of a location constraint, so it is encoded as the absence of one.</p>
+      </div></div>
+      <div class="step"><span class="n">3</span><div>
+        <h3>Read a real key as a string</h3>
+        <p><code>aws s3 ls s3://prima-tech-challenge-lisakalex-tfstate --recursive --profile admin</code>
+        &mdash; <code>senior-sre-tech-challenge/terraform.tfstate</code> looks like a folder and a file. It is
+        43 characters.</p>
+      </div></div>
+      <div class="step"><span class="n">4</span><div>
+        <h3>Watch versioning work</h3>
+        <p><code>aws s3api list-object-versions --bucket prima-tech-challenge-lisakalex-tfstate --profile admin</code>
+        &mdash; every past state file, each with its own version id.</p>
+      </div></div>
+      <div class="step"><span class="n">5</span><div>
+        <h3>Create a fake folder without creating one</h3>
+        <p>Upload any small file to key <code>demo/a/b/c.txt</code>. No directory was made, because there is no
+        such thing. Then delete it &mdash; and in a versioned bucket, watch <code>delete markers</code> go from
+        0 to 1 while the object stays recoverable.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Check yourself</p>
+      <h2>Four questions</h2>
+      <p class="note">Same rules as the Module 2 check: your own words, closed book, &ldquo;not sure&rdquo;
+      is a real answer. Hints only inside.</p>
+    </div>
+
+    <details>
+      <summary>1. A colleague says "I'll just rename the <code>avatars/</code> folder to <code>photos/</code>, it's one click in the console." What actually happens, and what would it cost on two million objects?</summary>
+      <div class="answer"><p>There is no rename operation in the API. Work out what the console must therefore do on your behalf, then count the requests.</p></div>
+    </details>
+
+    <details>
+      <summary>2. The state bucket has versioning on; the avatars bucket does not. Give the reason for each &mdash; and name a disaster versioning would <em>not</em> have saved the state bucket from.</summary>
+      <div class="answer"><p>The first half is on this page. For the second, ask what versioning protects and what it does not: something that removes the bucket, or the key that decrypts it.</p></div>
+    </details>
+
+    <details>
+      <summary>3. A teammate wants to name a bucket <code>backups</code>. Predict the error, and say which of the three words &mdash; bucket, key, object &mdash; is the reason.</summary>
+      <div class="answer"><p>One of the three has a scope the other two do not. The error message says so out loud.</p></div>
+    </details>
+
+    <details>
+      <summary>4. Someone claims "S3 is eleven nines durable, so we don't need backups." Where exactly is that wrong? Name one failure it does nothing about.</summary>
+      <div class="answer"><p>Eleven nines describes one party's failure mode. Ask whose &mdash; and who else is in a position to destroy the data.</p></div>
+    </details>
+  </section>
+
+  <footer>
+    <p>Module 03, Lesson 3.1 &middot; syllabus, progress log and full revision Q&amp;A in <code>docs/AWS_COURSE.md</code></p>
+    <p>Next: <strong>3.2</strong> &mdash; encryption &amp; access: SSE-KMS vs SSE-S3, <code>bucket_key_enabled</code>,
+    bucket policies, and the four public-access switches. Then <strong>3.3</strong>: storage classes and lifecycle
+    economics.</p>
+  </footer>
+
+</div>
+
+</body></html>
